@@ -121,7 +121,7 @@ def page_recommender():
             analysis = TextBlob(comment)
             return analysis.sentiment.polarity
 
-        st.title('TED Talk Recommendation System - Recommender')
+        st.title('TED Talks Recommendation System')
         talk_content = st.text_input('Enter your talk content:')
         if st.button('Recommend Talks'):
             recommended_titles = recommend_talks_with_sentiment([talk_content], comments,num_talks=15)
@@ -138,7 +138,7 @@ def page_recommender():
 def page_top_talks():
     df = pd.read_csv('JOINT_ted_video_transcripts_comments_stats.csv')
     df = df.dropna()
-    st.title('TED Talk Recommendation System - Top Talks')
+    st.title('Top Talks')
     st.subheader('Top Trending TED Talks:')
     
     # Sort the DataFrame by like count and comment count
@@ -166,7 +166,7 @@ def page_top_talks():
 
 # Page 3: Explore
 def page_explore():
-    st.title('TED Talk Recommendation System - Explore')
+    st.title('Xplore')
     st.write("This is the Explore page.")
 
 # Main app
