@@ -147,6 +147,7 @@ def page_top_talks(data):
         st.write(f"- [{row['title']}]({google_link})")
         st.write(f"  Published Date: {row['publushed_date']}, Likes: {int(row['like_count'])}")
 
+
 # Page 3: Explore
 def page_explore():
     st.title('TED Talk Recommendation System - Explore')
