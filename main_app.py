@@ -136,6 +136,8 @@ def page_recommender():
 
 # Page 2: Top Talks
 def page_top_talks():
+    df = pd.read_csv('JOINT_ted_video_transcripts_comments_stats.csv')
+    df = df.dropna()
     st.title('TED Talk Recommendation System - Top Talks')
     st.subheader('Top Trending TED Talks:')
     
