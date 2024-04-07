@@ -150,7 +150,9 @@ def page_top_talks():
         search_query = row['title'].replace(' ', '+')
         google_link = "https://www.google.com/search?q=" + search_query
         
-        st.write(f"{row['title']} - [{Go}]({google_link})")
+        # Display the title as text and make "Go" a clickable link
+        st.write(f"{row['title']} - [Go]({google_link})")
+
 
 
 
