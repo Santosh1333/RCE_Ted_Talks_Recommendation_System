@@ -41,7 +41,7 @@ sidebar_data = {
         "description": "Get personalized TED Talk recommendations.",
         "icon": "https://image.flaticon.com/icons/png/512/2099/2099056.png",
     },
-    "Top Talks": {
+    "Top Choices": {
         "description": "Discover the top trending TED Talks.",
         "icon": "https://image.flaticon.com/icons/png/512/300/300218.png",
     },
@@ -79,17 +79,23 @@ def page_recommender():
         comments = df['comments'].fillna('').astype(str)
         comments = comments.apply(preprocess_text)
 
-        @st.cache
-        def recommend_talks_with_sentiment(talk_content, comments, data=df, num_talks=10):
+        def get_similarities(talk_content, data=df):
             vectorizer = TfidfVectorizer()
             vectorizer.fit(data['details'])
-            talk_content_vector = vectorizer.transform(talk_content)
+            talk_array1 = vectorizer.transform(talk_content)
             details_array = vectorizer.transform(data['details'])  
-            sim = cosine_similarity(talk_content_vector, details_array)
-            cos_similarities = sim.flatten()
-            weighted_score = 0.8 * cos_similarities
+            sim = cosine_similarity(talk_array1, details_array)
+            return sim.flatten()  
+
+# Function to recommend talks with sentiment analysis
+        @st.cache
+        def recommend_talks_with_sentiment(talk_content, comments, data=df, num_talks=10):
+            cos_similarities = get_similarities(talk_content)
+            comment_sentiments = comments.apply(analyze_sentiment).values
+            weighted_score = 0.8 * cos_similarities + 0.3 * comment_sentiments
             data['score'] = weighted_score
-            recommended_talks = data.sort_values(by='score', ascending=False).head(num_talks)
+            recommended_talks = data.sort_values(by='score', ascending=False)
+            
 
             # Sentiment analysis of comments
             comment_sentiments = comments.apply(analyze_sentiment).values
@@ -142,12 +148,12 @@ def main():
         current_time = now.strftime("%I:%M:%S %p")
         st.sidebar.markdown(f"**Current Time:** {current_time}")
     display_time()
-    st.sidebar.title("Navigation")
-    selected_page = st.sidebar.selectbox("Go to", ["Recommender", "Top Talks", "Explore"])
+    st.sidebar.title("MainMenu")
+    selected_page = st.sidebar.selectbox("Go to", ["Recommender", "Top Choices", "Explore"])
 
     if selected_page == "Recommender":
         page_recommender()
-    elif selected_page == "Top Talks":
+    elif selected_page == "Top Choices":
         page_top_talks()
     elif selected_page == "Explore":
         page_explore()
