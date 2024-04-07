@@ -1,5 +1,16 @@
 import streamlit as st
 
+# Custom CSS for sidebar theme
+sidebar_custom_css = """
+.sidebar .sidebar-content {
+    background-image: linear-gradient(to bottom, #f4f4f4, #e3e3e3);
+    color: #333;
+}
+"""
+
+# Apply custom CSS
+st.markdown(sidebar_custom_css, unsafe_allow_html=True)
+
 # Page 1: Recommender
 def page_recommender():
     import numpy as np
@@ -22,7 +33,7 @@ def page_recommender():
 
 
     if __name__ == "__main__":
-        # Change 'background_image.jpg' to the path of your image file
+        #set_background('background_image.jpg')  # Change 'background_image.jpg' to the path of your image file
         display_time()
         nltk.download('stopwords')
         nltk.download('punkt')
