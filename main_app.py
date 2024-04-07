@@ -132,13 +132,13 @@ def page_explore():
 # Main app
 def main():
     st.sidebar.title("Navigation")
-    page = st.sidebar.radio("Go to", ["Recommender", "Top Talks", "Explore"])
+    selected_page = st.sidebar.selectbox("Go to", ["Recommender", "Top Talks", "Explore"])
 
-    if page == "Recommender":
+    if selected_page == "Recommender":
         page_recommender()
-    elif page == "Top Talks":
+    elif selected_page == "Top Talks":
         page_top_talks()
-    elif page == "Explore":
+    elif selected_page == "Explore":
         page_explore()
 
 if __name__ == "__main__":
