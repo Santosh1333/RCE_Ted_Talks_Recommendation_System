@@ -63,6 +63,10 @@ sidebar_data = {
     }
 }
 
+# Function to get top trending TED Talks
+def get_top_talks(data, num_talks=10):
+    return data.sort_values(by='like_count', ascending=False).head(num_talks)
+
 # Page 1: Recommender
 def page_recommender():
     
@@ -133,9 +137,15 @@ def page_recommender():
                 count += 1  
 
 # Page 2: Top Talks
-def page_top_talks():
+def page_top_talks(data):
     st.title('TED Talk Recommendation System - Top Talks')
-    st.write("This is the Top Talks page.")
+    st.subheader('Top Trending TED Talks:')
+    top_talks = get_top_talks(data)
+    for index, row in top_talks.iterrows():
+        search_query = row['title'].replace(' ', '+')
+        google_link = "https://www.google.com/search?q=" + search_query
+        st.write(f"- [{row['title']}]({google_link})")
+        st.write(f"  Published Date: {row['publushed_date']}, Likes: {int(row['like_count'])}")
 
 # Page 3: Explore
 def page_explore():
