@@ -154,9 +154,9 @@ def page_top_talks():
         st.write(f"- {row['title']}")
         
         # Create a button next to the title
-        if st.button("Go", key=f"button_{index}"):
+        
             # Open the search link in a new tab
-            st.markdown(f'<a href="{google_link}" target="_blank">Go</a>', unsafe_allow_html=True)
+        st.markdown(f'<a href="{google_link}" target="_blank">Go</a>', unsafe_allow_html=True)
         
         # Display additional information
         st.write(f"  Published Date: {row['publushed_date']}, Likes: {int(row['like_count'])}, Comments: {int(row['comments_count'])}")
