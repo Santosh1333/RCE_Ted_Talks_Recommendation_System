@@ -63,9 +63,7 @@ sidebar_data = {
     }
 }
 
-# Function to get top trending TED Talks
-def get_top_talks(data, num_talks=10):
-    return data.sort_values(by='like_count', ascending=False).head(num_talks)
+
 
 # Page 1: Recommender
 def page_recommender():
@@ -142,7 +140,7 @@ def page_top_talks():
     st.subheader('Top Trending TED Talks:')
     
     # Sort the DataFrame by like count and comment count
-    top_talks = df.sort_values(by=['like_count', 'comment_count'], ascending=False).head(10)
+    top_talks = df.sort_values(by=['like_count', 'comments_count'], ascending=False).head(10)
     
     # Display the top talks
     for index, row in top_talks.iterrows():
