@@ -140,7 +140,7 @@ def page_top_talks():
     st.subheader('Top Trending TED Talks:')
     
     # Sort the DataFrame by like count and comment count
-    top_talks = df.sort_values(by=['like_count', 'comments_count'], ascending=False).head(10)
+    top_talks = df.sort_values(by=['like_count'], ascending=False).head(10)
     
     # Display the top talks
     for index, row in top_talks.iterrows():
