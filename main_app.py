@@ -61,7 +61,7 @@ def page_recommender():
         st.sidebar.markdown(f"**Current Time:** {current_time}")
 
     if __name__ == "__main__":
-        display_time()
+        
         nltk.download('stopwords')
         nltk.download('punkt')
 
@@ -140,6 +140,7 @@ def page_explore():
 
 # Main app
 def main():
+    display_time()
     st.sidebar.title("Navigation")
     selected_page = st.sidebar.selectbox("Go to", ["Recommender", "Top Talks", "Explore"])
 
