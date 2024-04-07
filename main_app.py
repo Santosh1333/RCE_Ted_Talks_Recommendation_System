@@ -147,7 +147,7 @@ def page_top_talks():
         search_query = row['title'].replace(' ', '+')
         google_link = "https://www.google.com/search?q=" + search_query
         st.write(f"- [{row['title']}]({google_link})")
-        st.write(f"  Published Date: {row['publushed_date']}, Likes: {int(row['like_count'])}, Comments: {int(row['comment_count'])}")
+        st.write(f"  Published Date: {row['publushed_date']}, Likes: {int(row['like_count'])}, Comments: {int(row['comments_count'])}")
 
 
 
