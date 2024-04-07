@@ -1,11 +1,19 @@
 import streamlit as st
 
-# Custom CSS for sidebar theme
+# Custom CSS for sidebar tiles
 sidebar_custom_css = """
+<style>
 .sidebar .sidebar-content {
-    background-image: linear-gradient(to bottom, #f4f4f4, #e3e3e3);
-    color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
+.sidebar .sidebar-content .block-container {
+    margin-top: 20px;
+    width: 150px;
+    text-align: center;
+}
+</style>
 """
 
 # Apply custom CSS
@@ -30,10 +38,7 @@ def page_recommender():
         current_time = now.strftime("%I:%M:%S %p")
         st.markdown(current_time)
 
-
-
     if __name__ == "__main__":
-        #set_background('background_image.jpg')  # Change 'background_image.jpg' to the path of your image file
         display_time()
         nltk.download('stopwords')
         nltk.download('punkt')
@@ -119,4 +124,4 @@ def main():
         page_explore()
 
 if __name__ == "__main__":
-    main()
+    main()  
