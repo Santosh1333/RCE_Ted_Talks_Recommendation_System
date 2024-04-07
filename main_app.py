@@ -2,7 +2,7 @@ import streamlit as st
 import numpy as np
 import pandas as pd
 import nltk
-import string  
+import string
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from textblob import TextBlob
@@ -95,7 +95,16 @@ def page_recommender():
             weighted_score = 0.8 * cos_similarities
             data['score'] = weighted_score
             recommended_talks = data.sort_values(by='score', ascending=False).head(num_talks)
-            return recommended_talks[['title', 'publushed_date', 'like_count']]  
+
+            # Sentiment analysis of comments
+            comment_sentiments = comments.apply(analyze_sentiment).values
+            recommended_talks['sentiment_score'] = comment_sentiments
+            
+            return recommended_talks[['title', 'publushed_date', 'like_count', 'sentiment_score']]  
+
+        def analyze_sentiment(comment):
+            analysis = TextBlob(comment)
+            return analysis.sentiment.polarity
 
         st.title('TED Talk Recommendation System - Recommender')
         talk_content = st.text_input('Enter your talk content:')
@@ -107,7 +116,7 @@ def page_recommender():
                 search_query = row['title'].replace(' ', '+')
                 google_link = "https://www.google.com/search?q=" + search_query
                 st.write(f"{count}) {row['title']} - [Go]({google_link})", unsafe_allow_html=True)
-                st.write(f"          Published Date: {row['publushed_date']}, Likes: {int(row['like_count'])}")
+                st.write(f"          Published Date: {row['publushed_date']}, Likes: {int(row['like_count'])}, Sentiment Score: {row['sentiment_score']}")
                 count += 1  
 
             if st.button('Load More'):
@@ -116,7 +125,7 @@ def page_recommender():
                     search_query = row['title'].replace(' ', '+')
                     google_link = "https://www.google.com/search?q=" + search_query
                     st.write(f"{count}) {row['title']} - [Go]({google_link})", unsafe_allow_html=True)
-                    st.write(f"          Published Date: {row['publushed_date']}, Likes: {int(row['like_count'])}")
+                    st.write(f"          Published Date: {row['publushed_date']}, Likes: {int(row['like_count'])}, Sentiment Score: {row['sentiment_score']}")
                     count += 1  
 
 # Page 2: Top Talks
