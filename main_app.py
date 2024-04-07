@@ -151,7 +151,9 @@ def page_top_talks():
         google_link = "https://www.google.com/search?q=" + search_query
         
         # Display the title and the link side by side
-        st.write(f"- {row['title']} [<a href='{google_link}' target='_blank'>Go</a>]")
+        # Display the title as text and create a link next to it with a name
+        st.write(f"- [{row['title']}](<{google_link}>) [Go]")
+
 
         # Display additional information
         st.write(f"  Published Date: {row['publushed_date']}, Likes: {int(row['like_count'])}, Comments: {int(row['comments_count'])}")
