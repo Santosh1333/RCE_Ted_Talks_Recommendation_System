@@ -154,7 +154,9 @@ def page_top_talks():
         # Display the title as text and create a link next to it with a name
         # Display the title as text and make "Go" a clickable link
         # Display the title as text and make "Go" a clickable link
-        st.write(f"{row['title']} - [{Go}]({google_link})")
+        # Display the title as text and make "Go" a clickable link
+        st.write(f"[{row['title']}]({google_link}) - [Go]({google_link})")
+
 
 
 
