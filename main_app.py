@@ -101,7 +101,7 @@ def page_recommender():
             comment_sentiments = comments.apply(analyze_sentiment).values
             recommended_talks['sentiment_score'] = comment_sentiments
             
-            return recommended_talks[['title', 'publushed_date', 'like_count']]  
+            return recommended_talks[['title', 'publushed_date', 'like_count']].head(num_talks)  
 
         def analyze_sentiment(comment):
             analysis = TextBlob(comment)
@@ -119,15 +119,6 @@ def page_recommender():
                 st.write(f"{count}) {row['title']} - [Go]({google_link})", unsafe_allow_html=True)
                 st.write(f"          Published Date: {row['publushed_date']}, Likes: {int(row['like_count'])}")
                 count += 1  
-
-            if st.button('Load More'):
-                recommended_titles = recommend_talks_with_sentiment([talk_content], comments, num_talks=20)
-                for index, row in recommended_titles.iloc[10:].iterrows():
-                    search_query = row['title'].replace(' ', '+')
-                    google_link = "https://www.google.com/search?q=" + search_query
-                    st.write(f"{count}) {row['title']} - [Go]({google_link})", unsafe_allow_html=True)
-                    st.write(f"          Published Date: {row['publushed_date']}, Likes: {int(row['like_count'])}")
-                    count += 1  
 
 # Page 2: Top Talks
 def page_top_talks():
