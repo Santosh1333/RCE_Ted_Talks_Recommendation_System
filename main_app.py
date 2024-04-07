@@ -43,15 +43,15 @@ def preprocess_text(text):
     return text
 
 @st.cache
-def recommend_talks_with_sentiment(talk_content, comments, data=df, num_talks=10):
+def recommend_talks_with_sentiment(talk_content, comments, df, num_talks=10):
     vectorizer = TfidfVectorizer()
-    vectorizer.fit(data['details'])
+    vectorizer.fit(df['details'])
     
     # TF-IDF vectorization for input talk content
     talk_content_vector = vectorizer.transform(talk_content)
     
     # Calculate cosine similarity between input talk content and all talks
-    similarities = cosine_similarity(talk_content_vector, vectorizer.transform(data['details']))
+    similarities = cosine_similarity(talk_content_vector, vectorizer.transform(df['details']))
     
     # Get indices of top similar talks
     top_talk_indices = similarities.argsort(axis=1)[:, -num_talks:].flatten()
@@ -63,10 +63,10 @@ def recommend_talks_with_sentiment(talk_content, comments, data=df, num_talks=10
     comment_sentiments = [analyze_sentiment(comment) for comment in selected_comments]
     
     # Combine sentiments with talk data
-    data['sentiment_score'] = comment_sentiments
+    df['sentiment_score'] = comment_sentiments
     
     # Sort talks by sentiment score
-    recommended_talks = data.sort_values(by='sentiment_score', ascending=False).head(num_talks)
+    recommended_talks = df.sort_values(by='sentiment_score', ascending=False).head(num_talks)
     
     return recommended_talks[['title', 'publushed_date', 'like_count']]
 
@@ -89,11 +89,11 @@ if __name__ == "__main__":
     comments = df['comments'].fillna('').astype(str)
     comments = comments.apply(preprocess_text)
 
-    def get_similarities(talk_content, data=df):
+    def get_similarities(talk_content, df):
         vectorizer = TfidfVectorizer()
-        vectorizer.fit(data['details'])
+        vectorizer.fit(df['details'])
         talk_array1 = vectorizer.transform(talk_content)
-        details_array = vectorizer.transform(data['details'])  
+        details_array = vectorizer.transform(df['details'])  
         sim = cosine_similarity(talk_array1, details_array)
         return sim.flatten()
 
@@ -101,7 +101,7 @@ if __name__ == "__main__":
         st.title('TED Talk Recommendation System')
         talk_content = st.text_input('Enter your talk content:')
         if st.button('Recommend Talks'):
-            recommended_titles = recommend_talks_with_sentiment([talk_content], comments)
+            recommended_titles = recommend_talks_with_sentiment([talk_content], comments, df)
             st.subheader('Recommended Talks:')
             count = 1  
             for index, row in recommended_titles.iterrows():
@@ -112,7 +112,7 @@ if __name__ == "__main__":
                 count += 1  
 
             if st.button('Load More'):
-                recommended_titles = recommend_talks_with_sentiment([talk_content], comments, num_talks=20)
+                recommended_titles = recommend_talks_with_sentiment([talk_content], comments, df, num_talks=20)
                 for index, row in recommended_titles.iloc[10:].iterrows():
                     search_query = row['title'].replace(' ', '+')
                     google_link = "https://www.google.com/search?q=" + search_query
