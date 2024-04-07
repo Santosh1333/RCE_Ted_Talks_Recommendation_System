@@ -1,4 +1,13 @@
 import streamlit as st
+import numpy as np
+import pandas as pd
+import nltk
+import string  
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+from textblob import TextBlob
+import datetime
+import pytz
 
 # Custom CSS for sidebar tiles
 sidebar_custom_css = """
@@ -13,24 +22,37 @@ sidebar_custom_css = """
     width: 150px;
     text-align: center;
 }
+.sidebar .sidebar-content .block-container img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
 </style>
 """
 
 # Apply custom CSS
 st.markdown(sidebar_custom_css, unsafe_allow_html=True)
 
+# Sidebar data
+sidebar_data = {
+    "Recommender": {
+        "description": "Get personalized TED Talk recommendations.",
+        "icon": "https://image.flaticon.com/icons/png/512/2099/2099056.png",
+    },
+    "Top Talks": {
+        "description": "Discover the top trending TED Talks.",
+        "icon": "https://image.flaticon.com/icons/png/512/300/300218.png",
+    },
+    "Explore": {
+        "description": "Explore TED Talks by category.",
+        "icon": "https://image.flaticon.com/icons/png/512/3628/3628665.png",
+    }
+}
+
 # Page 1: Recommender
 def page_recommender():
-    import numpy as np
-    import pandas as pd
-    import nltk
-    import string  
-    from sklearn.feature_extraction.text import TfidfVectorizer
-    from sklearn.metrics.pairwise import cosine_similarity
-    from textblob import TextBlob
-    import datetime
-    import pytz
-
     def display_time():
         """Displays the current Indian Standard Time."""
         ist = pytz.timezone('Asia/Kolkata')
@@ -75,31 +97,27 @@ def page_recommender():
             recommended_talks = data.sort_values(by='score', ascending=False).head(num_talks)
             return recommended_talks[['title', 'publushed_date', 'like_count']]  
 
-        def main():
-            st.title('TED Talk Recommendation System - Recommender')
-            talk_content = st.text_input('Enter your talk content:')
-            if st.button('Recommend Talks'):
-                recommended_titles = recommend_talks_with_sentiment([talk_content], comments)
-                st.subheader('Recommended Talks:')
-                count = 1  
-                for index, row in recommended_titles.iterrows():
+        st.title('TED Talk Recommendation System - Recommender')
+        talk_content = st.text_input('Enter your talk content:')
+        if st.button('Recommend Talks'):
+            recommended_titles = recommend_talks_with_sentiment([talk_content], comments)
+            st.subheader('Recommended Talks:')
+            count = 1  
+            for index, row in recommended_titles.iterrows():
+                search_query = row['title'].replace(' ', '+')
+                google_link = "https://www.google.com/search?q=" + search_query
+                st.write(f"{count}) {row['title']} - [Go]({google_link})", unsafe_allow_html=True)
+                st.write(f"          Published Date: {row['publushed_date']}, Likes: {int(row['like_count'])}")
+                count += 1  
+
+            if st.button('Load More'):
+                recommended_titles = recommend_talks_with_sentiment([talk_content], comments, num_talks=20)
+                for index, row in recommended_titles.iloc[10:].iterrows():
                     search_query = row['title'].replace(' ', '+')
                     google_link = "https://www.google.com/search?q=" + search_query
                     st.write(f"{count}) {row['title']} - [Go]({google_link})", unsafe_allow_html=True)
                     st.write(f"          Published Date: {row['publushed_date']}, Likes: {int(row['like_count'])}")
                     count += 1  
-
-                if st.button('Load More'):
-                    recommended_titles = recommend_talks_with_sentiment([talk_content], comments, num_talks=20)
-                    for index, row in recommended_titles.iloc[10:].iterrows():
-                        search_query = row['title'].replace(' ', '+')
-                        google_link = "https://www.google.com/search?q=" + search_query
-                        st.write(f"{count}) {row['title']} - [Go]({google_link})", unsafe_allow_html=True)
-                        st.write(f"          Published Date: {row['publushed_date']}, Likes: {int(row['like_count'])}")
-                        count += 1  
-
-        if __name__ == '__main__':
-            main()
 
 # Page 2: Top Talks
 def page_top_talks():
@@ -124,4 +142,4 @@ def main():
         page_explore()
 
 if __name__ == "__main__":
-    main()  
+    main()
