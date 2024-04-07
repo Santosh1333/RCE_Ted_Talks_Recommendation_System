@@ -45,12 +45,13 @@ body {
 """
 
 # Apply custom CSS
-st.markdown(main_custom_css, unsafe_allow_html=True
+st.markdown(main_custom_css, unsafe_allow_html=True)
+
 # Sidebar data
 sidebar_data = {
     "Recommender": {
         "description": "Get personalized TED Talk recommendations.",
-        "icon": "TEDSpeakeronstage.png",
+        "icon": "https://image.flaticon.com/icons/png/512/2099/2099056.png",
     },
     "Top Choices": {
         "description": "Discover the top trending TED Talks.",
