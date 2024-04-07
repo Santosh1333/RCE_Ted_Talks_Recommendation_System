@@ -62,6 +62,10 @@ def recommend_talks_with_sentiment(talk_content, comments, df, num_talks=10):
     # Perform sentiment analysis on selected comments
     comment_sentiments = [analyze_sentiment(comment) for comment in selected_comments]
     
+    # Check lengths to debug the issue
+    if len(comment_sentiments) != len(df):
+        raise ValueError("Length of comment_sentiments does not match the length of DataFrame df.")
+    
     # Combine sentiments with talk data
     df['sentiment_score'] = comment_sentiments
     
