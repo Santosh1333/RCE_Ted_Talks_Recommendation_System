@@ -110,7 +110,7 @@ def page_recommender():
         st.title('TED Talk Recommendation System - Recommender')
         talk_content = st.text_input('Enter your talk content:')
         if st.button('Recommend Talks'):
-            recommended_titles = recommend_talks_with_sentiment([talk_content], comments)
+            recommended_titles = recommend_talks_with_sentiment([talk_content], comments,num_talks=15)
             st.subheader('Recommended Talks:')
             count = 1  
             for index, row in recommended_titles.iterrows():
