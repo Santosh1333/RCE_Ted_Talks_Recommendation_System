@@ -150,19 +150,14 @@ def page_top_talks():
         search_query = row['title'].replace(' ', '+')
         google_link = "https://www.google.com/search?q=" + search_query
         
-        # Create two columns for the title and the link
-        col1, col2 = st.beta_columns([3, 1])
+        # Display the title as text
+        st.write(f"- {row['title']}")
         
-        # Display the title in the first column
-        with col1:
-            st.write(f"- {row['title']}")
-        
-        # Display the link in the second column
-        with col2:
-            st.write(f"[Go]({google_link})")
+        # Create a link next to the title
+        st.write(f"[Go]({google_link})")
         
         # Display additional information
-        st.write(f"  Published Date: {row['published_date']}, Likes: {int(row['like_count'])}, Comments: {int(row['comments_count'])}")
+        st.write(f"  Published Date: {row['publushed_date']}, Likes: {int(row['like_count'])}, Comments: {int(row['comments_count'])}")
 
 
 
