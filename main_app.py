@@ -58,7 +58,7 @@ def page_recommender():
         ist = pytz.timezone('Asia/Kolkata')
         now = datetime.datetime.now(ist)
         current_time = now.strftime("%I:%M:%S %p")
-        st.markdown(f"**Current Time:** {current_time}")
+        st.sidebar.markdown(f"**Current Time:** {current_time}")
 
     if __name__ == "__main__":
         display_time()
@@ -131,7 +131,6 @@ def page_explore():
 
 # Main app
 def main():
-    display_time()
     st.sidebar.title("Navigation")
     selected_page = st.sidebar.selectbox("Go to", ["Recommender", "Top Talks", "Explore"])
 
