@@ -39,7 +39,7 @@ st.markdown(sidebar_custom_css, unsafe_allow_html=True)
 sidebar_data = {
     "Recommender": {
         "description": "Get personalized TED Talk recommendations.",
-        "icon": "https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg",
+        "icon": "TEDSpeakeronstage.jpg",
     },
     "Top Choices": {
         "description": "Discover the top trending TED Talks.",
