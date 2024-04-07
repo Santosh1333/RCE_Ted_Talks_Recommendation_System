@@ -6,7 +6,6 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from textblob import TextBlob
 import streamlit as st
-import webbrowser
 import datetime
 import pytz
 
@@ -16,6 +15,22 @@ def display_time():
     now = datetime.datetime.now(ist)
     current_time = now.strftime("%I:%M:%S %p")
     st.markdown(current_time)
+
+def set_background(image_path):
+    """
+    Function to set background image for Streamlit app.
+    """
+    # Set CSS for the background
+    background_css = """
+        <style>
+        .stApp {
+            background-image: url("""" + image_path + """");
+            background-size: cover;
+        }
+        </style>
+    """
+    # Insert background CSS
+    st.markdown(background_css, unsafe_allow_html=True)
 
 def preprocess_text(text):
     if pd.isnull(text):
@@ -60,6 +75,7 @@ def analyze_sentiment(comment):
     return analysis.sentiment.polarity
 
 if __name__ == "__main__":
+    set_background('background_image.jpg')  # Change 'background_image.jpg' to the path of your image file
     display_time()
     nltk.download('stopwords')
     nltk.download('punkt')
