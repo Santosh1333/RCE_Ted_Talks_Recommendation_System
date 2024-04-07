@@ -142,7 +142,7 @@ def page_top_talks():
     st.subheader('Top Trending TED Talks:')
     
     # Sort the DataFrame by like count and comment count
-    top_talks = df.sort_values(by=['like_count', 'comments_count'], ascending=False).head(10)
+    top_talks = df.sort_values(by=['like_count', 'comment_count'], ascending=False).head(10)
     
     # Display the top talks
     for index, row in top_talks.iterrows():
@@ -150,16 +150,19 @@ def page_top_talks():
         search_query = row['title'].replace(' ', '+')
         google_link = "https://www.google.com/search?q=" + search_query
         
-        # Display the title as text
-        st.write(f"- {row['title']}")
+        # Create two columns for the title and the link
+        col1, col2 = st.beta_columns([3, 1])
         
-        # Create a button next to the title
+        # Display the title in the first column
+        with col1:
+            st.write(f"- {row['title']}")
         
-            # Open the search link in a new tab
-        st.markdown(f'<a href="{google_link}" target="_blank">Go</a>', unsafe_allow_html=True)
+        # Display the link in the second column
+        with col2:
+            st.write(f"[Go]({google_link})")
         
         # Display additional information
-        st.write(f"  Published Date: {row['publushed_date']}, Likes: {int(row['like_count'])}, Comments: {int(row['comments_count'])}")
+        st.write(f"  Published Date: {row['published_date']}, Likes: {int(row['like_count'])}, Comments: {int(row['comments_count'])}")
 
 
 
