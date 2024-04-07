@@ -137,15 +137,20 @@ def page_recommender():
                 count += 1  
 
 # Page 2: Top Talks
-def page_top_talks(data):
+def page_top_talks():
     st.title('TED Talk Recommendation System - Top Talks')
     st.subheader('Top Trending TED Talks:')
-    top_talks = get_top_talks(data)
+    
+    # Sort the DataFrame by like count and comment count
+    top_talks = df.sort_values(by=['like_count', 'comment_count'], ascending=False).head(10)
+    
+    # Display the top talks
     for index, row in top_talks.iterrows():
         search_query = row['title'].replace(' ', '+')
         google_link = "https://www.google.com/search?q=" + search_query
         st.write(f"- [{row['title']}]({google_link})")
-        st.write(f"  Published Date: {row['publushed_date']}, Likes: {int(row['like_count'])}")
+        st.write(f"  Published Date: {row['publushed_date']}, Likes: {int(row['like_count'])}, Comments: {int(row['comment_count'])}")
+
 
 
 # Page 3: Explore
